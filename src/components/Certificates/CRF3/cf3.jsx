@@ -1,17 +1,21 @@
-// FloralCertificate.js
-import React from 'react';
-import './certificates.css'; // Import the single CSS file
+import React, { forwardRef } from 'react';
+import { FaBuilding } from 'react-icons/fa';
+import styles from './crf3.module.css';
 
-const FloralCertificate = ({ recipientName, courseName, date, signature }) => {
-  return (
-    <div className={`certificate floral`}>
-      <h1 className="title">Floral Certificate</h1>
-      <p className="recipient">{recipientName}</p>
-      <p className="course">{courseName}</p>
-      <p className="date">Date: {date}</p>
-      <p className="signature">Signed: {signature}</p>
+const Certificate3 = forwardRef((props, ref) => (
+  <div ref={ref} className={styles.certificate}>
+    <h1 className={styles.title}>Corporate Achievement Award</h1>
+    <p className={styles.recipient}>
+      Presented to: <span className={styles.name}>[Recipient Name]</span>
+    </p>
+    <FaBuilding className={styles.buildingIcon} />
+    <p className={styles.description}>For exemplary contributions and dedication.</p>
+    <p className={styles.date}>Date: 2024-10-23</p>
+    <div className={styles.signatureSection}>
+      <p>____________________</p>
+      <p>Company Representative</p>
     </div>
-  );
-};
+  </div>
+));
 
-export default FloralCertificate;
+export default Certificate3;

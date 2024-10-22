@@ -1,17 +1,21 @@
-// ColorfulCertificate.js
-import React from 'react';
-import './certificates.css'; // Import the single CSS file
+import React, { forwardRef } from 'react';
+import { FaGraduationCap } from 'react-icons/fa';
+import styles from './crf4.module.css';
 
-const ColorfulCertificate = ({ recipientName, courseName, date, signature }) => {
-  return (
-    <div className={`certificate colorful`}>
-      <h1 className="title">Colorful Certificate</h1>
-      <p className="recipient">{recipientName}</p>
-      <p className="course">{courseName}</p>
-      <p className="date">Date: {date}</p>
-      <p className="signature">Signed: {signature}</p>
+const Certificate4 = forwardRef((props, ref) => (
+  <div ref={ref} className={styles.certificate}>
+    <h1 className={styles.title}>Academic Achievement Certificate</h1>
+    <p className={styles.recipient}>
+      Presented to: <span className={styles.name}>[Recipient Name]</span>
+    </p>
+    <FaGraduationCap className={styles.capIcon} />
+    <p className={styles.description}>For your exceptional academic performance.</p>
+    <p className={styles.date}>Date: 2024-10-23</p>
+    <div className={styles.signatureSection}>
+      <p>____________________</p>
+      <p>Institution Representative</p>
     </div>
-  );
-};
+  </div>
+));
 
-export default ColorfulCertificate;
+export default Certificate4;

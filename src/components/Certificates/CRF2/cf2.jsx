@@ -1,17 +1,21 @@
-// ModernGradientCertificate.js
-import React from 'react';
-import './certificates.css'; // Import the single CSS file
+import React, { forwardRef } from 'react';
+import { FaRibbon } from 'react-icons/fa';
+import styles from './crf2.module.css';
 
-const ModernGradientCertificate = ({ recipientName, achievement, date, signature }) => {
-  return (
-    <div className={`certificate modern-gradient`}>
-      <h1 className="title">Achievement Award</h1>
-      <p className="recipient">{recipientName}</p>
-      <p className="achievement">{achievement}</p>
-      <p className="date">Date: {date}</p>
-      <p className="signature">Signed: {signature}</p>
+const Certificate2 = forwardRef((props, ref) => (
+  <div ref={ref} className={styles.certificate}>
+    <h1 className={styles.title}>Certificate of Achievement</h1>
+    <p className={styles.recipient}>
+      This is awarded to: <span className={styles.name}>[Recipient Name]</span>
+    </p>
+    <FaRibbon className={styles.ribbonIcon} />
+    <p className={styles.description}>For your exceptional performance!</p>
+    <p className={styles.date}>Date: 2024-10-23</p>
+    <div className={styles.signatureSection}>
+      <p>____________________</p>
+      <p>Authorized Signature</p>
     </div>
-  );
-};
+  </div>
+));
 
-export default ModernGradientCertificate;
+export default Certificate2;

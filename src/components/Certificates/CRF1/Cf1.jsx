@@ -1,29 +1,26 @@
+// src/Certificates/CRF1/Cf1.js
 import React, { forwardRef } from 'react';
-import { FaStar, FaSignature } from 'react-icons/fa'; // Import icons
-import styles from './crf1.module.css'; // Assuming you're using modular CSS
+import { FaAward } from 'react-icons/fa';
+import styles from './crf1.module.css';
 
-const Certificate = forwardRef((props, ref) => (
+const Certificate1 = forwardRef(({ customization }, ref) => (
   <div ref={ref} className={styles.certificate}>
-    <h1 className={styles.title}>Certificate of Achievement</h1>
+    <h1 className={styles.title}>Certificate of Excellence</h1>
     <p className={styles.recipient}>
-      Awarded to: <span className={styles.name}>[Recipient Name]</span>
+      Awarded to: <span className={styles.name}>{customization.name || '[Recipient Name]'}</span>
     </p>
-    <p className={styles.description}>For outstanding performance and dedication.</p>
-    <p className={styles.date}>Date: 2024-10-23</p>
-
-    {/* Signature section */}
-    <div className={styles.signatureSection}>
-      <FaSignature className={styles.signatureIcon} />
-      <p className={styles.signature}>Authorized Signature</p>
+    <p className={styles.description}>
+      In recognition of your outstanding achievement in <span className={styles.name}>{customization.certificateName || '[Certificate Name]'}</span>.
+    </p>
+    <div className={styles.iconContainer}>
+      <FaAward className={styles.icon} />
     </div>
-
-    {/* Decorative stars */}
-    <div className={styles.stars}>
-      <FaStar className={styles.star} />
-      <FaStar className={styles.star} />
-      <FaStar className={styles.star} />
+    <p className={styles.date}>Date: {customization.dateIssued || 'Date Here'}</p>
+    <div className={styles.footer}>
+      <p>Signature</p>
+      <p>____________________</p>
     </div>
   </div>
 ));
 
-export default Certificate;
+export default Certificate1;

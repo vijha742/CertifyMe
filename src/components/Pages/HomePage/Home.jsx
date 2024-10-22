@@ -1,30 +1,69 @@
-import React from 'react';
+// src/Home/Home.jsx
+import React, { useRef, useState } from 'react';
 import { jsPDF } from "jspdf";
-import html2canvas from "html2canvas"; // Import html2canvas
+import html2canvas from 'html2canvas';
 import styles from './Home.module.css';
-import NavbarTemp from "../../Navbars/NavabrTemp/NavbarTemp";
 import { FaCertificate, FaUpload, FaCheckCircle } from 'react-icons/fa';
 import CenteredContainer from "../../CenterdComponent/CenteredContainer";
-import Certificate from '../../Certificates/CRF1/Cf1';
+import Certificate1 from '../../Certificates/CRF1/Cf1';
+import Certificate2 from '../../Certificates/CRF2/cf2';
+import Certificate3 from '../../Certificates/CRF3/cf3';
+import Certificate4 from '../../Certificates/CRF4/cf4';
+import Slider from 'react-slick';
+import CertificateModal from '../../Certificates/CertificateExportModal/CertificateModal';
 
 const Home = () => {
-  const handleGeneratePDF = () => {
-    const certificateElement = document.getElementById('certificateToPDF');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCertificate, setSelectedCertificate] = useState(null);
+  const [customization, setCustomization] = useState({ name: '', certificateName: '', dateIssued: '' });
 
-    html2canvas(certificateElement).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
+  // Create refs for each certificate
+  const certificate1Ref = useRef();
+  const certificate2Ref = useRef();
+  const certificate3Ref = useRef();
+  const certificate4Ref = useRef();
 
-      const pdf = new jsPDF({
-        orientation: 'landscape',
-        unit: 'px',
-        format: [800, 500], // Match the certificate size
-      });
+  // Slider settings
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: true,
+    centerMode: true,
+    centerPadding: '12%', // Adjust padding to reduce space
+  };
 
-      pdf.addImage(imgData, 'PNG', 0, 0, 800, 500);
-      pdf.save('certificate.pdf');
-    }).catch((error) => {
-      console.error("Error generating PDF: ", error);
+  const handleGeneratePDF = async (certificateRef) => {
+    const element = certificateRef.current;
+    const canvas = await html2canvas(element);
+    const imgData = canvas.toDataURL('image/png');
+    const doc = new jsPDF({
+      orientation: 'landscape',
+      unit: 'px',
+      format: [800, 500],
     });
+
+    doc.addImage(imgData, 'PNG', 0, 0, 800, 500);
+
+    // Add the customized information to the PDF
+    // Ensure you provide proper Y-coordinates for the text to be visible
+    doc.text(`Recipient Name: ${customization.name}`, 50, 450);
+    doc.text(`Certificate Name: ${customization.certificateName}`, 50, 470);
+    doc.text(`Date Issued: ${customization.dateIssued}`, 50, 490);
+    
+    doc.save('certificate.pdf');
+  };
+
+  const openModal = (certificateRef) => {
+    setSelectedCertificate(certificateRef);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCertificate(null);
   };
 
   return (
@@ -59,20 +98,40 @@ const Home = () => {
         </section>
 
         <section className={styles.templatesSection}>
-          <h2>Certificate Templates</h2>
-          <div className={styles.certificates}>
-            <div id="certificateToPDF">
-              <Certificate />
+          <h2 className={styles.templateHeader}>Certificate Templates</h2>
+          <Slider {...settings}>
+            <div className={styles.sliderItem}>
+              <Certificate1 ref={certificate1Ref} customization={customization} />
+              <button className={styles.pdfButton} onClick={() => openModal(certificate1Ref)}>Customize</button>
             </div>
-            <button className={styles.pdfButton} onClick={handleGeneratePDF}>
-              Convert to PDF
-            </button>
-          </div>
+            <div className={styles.sliderItem}>
+              <Certificate2 ref={certificate2Ref} customization={customization} />
+              <button className={styles.pdfButton} onClick={() => openModal(certificate2Ref)}>Customize</button>
+            </div>
+            <div className={styles.sliderItem}>
+              <Certificate3 ref={certificate3Ref} customization={customization} />
+              <button className={styles.pdfButton} onClick={() => openModal(certificate3Ref)}>Customize</button>
+            </div>
+            <div className={styles.sliderItem}>
+              <Certificate4 ref={certificate4Ref} customization={customization} />
+              <button className={styles.pdfButton} onClick={() => openModal(certificate4Ref)}>Customize</button>
+            </div>
+          </Slider>
         </section>
 
         <footer className={styles.footer}>
           <p>&copy; 2024 CertifyMe. All Rights Reserved.</p>
         </footer>
+
+        {/* Render the modal */}
+        <CertificateModal 
+          isOpen={isModalOpen} 
+          onClose={closeModal} 
+          onGenerate={(customizationData) => {
+            setCustomization(customizationData); // Set the customization details
+            handleGeneratePDF(selectedCertificate); // Generate PDF after setting customization
+          }} 
+        />
       </div>
     </CenteredContainer>
   );
