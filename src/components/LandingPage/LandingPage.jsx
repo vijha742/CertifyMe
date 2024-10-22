@@ -1,9 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaCertificate, FaShieldAlt, FaUserCheck } from 'react-icons/fa';
 import styles from './LandingPage.module.css';
 import CenteredContainer from '../CenterdComponent/CenteredContainer';
+import Login from '../Login&Signup/LoginModal/Login'; // Import the Login component
+import Signup from '../Login&Signup/SignupModal/Signup'; // Import the Signup component
 
 const LandingPage = () => {
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
+
+  const openLoginModal = () => {
+    setIsSignupModalOpen(false); // Ensure the signup modal is closed
+    setIsLoginModalOpen(true); // Open the login modal
+  };
+
+  const closeLoginModal = () => setIsLoginModalOpen(false);
+
+  const openSignupModal = () => {
+    setIsLoginModalOpen(false); // Ensure the login modal is closed
+    setIsSignupModalOpen(true); // Open the signup modal
+  };
+
+  const closeSignupModal = () => setIsSignupModalOpen(false);
+
   return (
     <CenteredContainer>
       <div className={styles.container}>
@@ -11,7 +30,7 @@ const LandingPage = () => {
           <div className={styles.heroContent}>
             <h1>Welcome to <span className={styles.certifyme}>CertifyMe</span></h1>
             <p>Create effortless certificates and verify any time with CertifyMe.</p>
-            <button className={styles.ctaBtn}>Get Started</button>
+            <button className={styles.ctaBtn} onClick={openLoginModal}>Get Started</button>
           </div>
 
           {/* Floating shapes */}
@@ -47,6 +66,20 @@ const LandingPage = () => {
           <p>&copy; 2024 CertifyMe. All rights reserved.</p>
         </footer>
       </div>
+
+      {/* Login Modal */}
+      {isLoginModalOpen && (
+        <div className={styles.modalOverlay}>
+          <Login onClose={closeLoginModal} openSignupModal={openSignupModal} />
+        </div>
+      )}
+
+      {/* Signup Modal */}
+      {isSignupModalOpen && (
+        <div className={styles.modalOverlay}>
+          <Signup onClose={closeSignupModal} openLoginModal={openLoginModal} />
+        </div>
+      )}
     </CenteredContainer>
   );
 };

@@ -12,6 +12,12 @@ import Certificate4 from '../../Certificates/CRF4/cf4';
 import Slider from 'react-slick';
 import CertificateModal from '../../Certificates/CertificateExportModal/CertificateModal';
 
+
+
+// WEB3 CODE
+
+//---------
+
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCertificate, setSelectedCertificate] = useState(null);
