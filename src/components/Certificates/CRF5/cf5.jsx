@@ -1,6 +1,6 @@
 // MinimalistCertificate.js
 import React from 'react';
-import './certificates.css'; // Import the single CSS file
+import './crf5.module.css'; // Import the single CSS file
 
 const MinimalistCertificate = ({ recipientName, courseName, date, signature }) => {
   return (
