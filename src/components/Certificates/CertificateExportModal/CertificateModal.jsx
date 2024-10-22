@@ -1,43 +1,47 @@
+// src/Certificates/CertificateExportModal/CertificateModal.jsx
 import React, { useState } from 'react';
-import Modal from 'react-modal';
 import styles from './CertificateModal.module.css';
-
-// Set the app element for accessibility
-Modal.setAppElement('#root'); // Replace '#root' with the ID of your main container if different
 
 const CertificateModal = ({ isOpen, onClose, onGenerate }) => {
   const [name, setName] = useState('');
   const [certificateName, setCertificateName] = useState('');
   const [dateIssued, setDateIssued] = useState('');
 
-  const handleSubmit = () => {
+  const handleSave = () => {
+    // Call the onGenerate function to save data
     onGenerate({ name, certificateName, dateIssued });
-    onClose();
+    onClose(); // Close the modal after saving
   };
 
+  const handleExport = () => {
+    onGenerate({ name, certificateName, dateIssued }, true); // Pass true to indicate exporting
+  };
+
+  if (!isOpen) return null;
+
   return (
-    <Modal 
-      isOpen={isOpen} 
-      onRequestClose={onClose} 
-      className={styles.modalContent} 
-      overlayClassName={styles.modalOverlay}
-    >
-      <h2>Customize Certificate</h2>
-      <div>
-        <label>Recipient Name:</label>
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+    <div className={styles.modalOverlay}>
+      <div className={styles.modal}>
+        <h2>Customize Certificate</h2>
+        <label>
+          Recipient Name:
+          <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+        </label>
+        <label>
+          Certificate Name:
+          <input type="text" value={certificateName} onChange={(e) => setCertificateName(e.target.value)} />
+        </label>
+        <label>
+          Date Issued:
+          <input type="text" value={dateIssued} onChange={(e) => setDateIssued(e.target.value)} />
+        </label>
+        <div className={styles.buttonContainer}>
+          <button onClick={handleSave}>Save</button>
+          <button onClick={handleExport}>Save and Export</button>
+          <button onClick={onClose}>Cancel</button>
+        </div>
       </div>
-      <div>
-        <label>Certificate Name:</label>
-        <input type="text" value={certificateName} onChange={(e) => setCertificateName(e.target.value)} />
-      </div>
-      <div>
-        <label>Date Issued:</label>
-        <input type="text" value={dateIssued} onChange={(e) => setDateIssued(e.target.value)} />
-      </div>
-      <button onClick={handleSubmit}>Generate</button>
-      <button className={styles.closeButton} onClick={onClose}>Cancel</button>
-    </Modal>
+    </div>
   );
 };
 

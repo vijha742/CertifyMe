@@ -1,117 +1,94 @@
-.modalContent {
-    background-color: #fff; /* White background for a clean look */
-    border-radius: 10px; /* Rounded corners for a modern feel */
-    padding: 20px; /* Inner padding for spacing */
-    width: 90%; /* Responsive width */
-    max-width: 500px; /* Limit max width for larger screens */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    position: relative; /* Positioning for absolute elements if needed */
-    margin: auto; /* Centering the modal */
-    transition: all 0.3s ease; /* Smooth transitions */
-  }
-  
-  h2 {
-    color: #333; /* Dark text for headings */
-    font-size: 24px; /* Larger font size for headings */
-    margin-bottom: 15px; /* Spacing below the heading */
-    text-align: center; /* Centered heading */
-  }
-  
-  label {
-    display: block; /* Block display for labels */
-    margin: 15px 0 5px; /* Spacing around labels */
-    font-weight: 600; /* Bold labels */
-    color: #555; /* Slightly lighter text for readability */
-  }
-  
-  input {
-    width: 100%; /* Full width input fields */
-    padding: 10px; /* Inner padding for comfort */
-    border: 1px solid #ddd; /* Light border */
-    border-radius: 5px; /* Rounded input corners */
-    font-size: 16px; /* Comfortable font size */
-    transition: border 0.3s; /* Smooth border transition */
-  }
-  
-  input:focus {
-    border-color: #007bff; /* Highlight border on focus */
-    outline: none; /* Remove default outline */
-  }
-  
-  button {
-    background-color: #007bff; /* Bootstrap primary color */
-    color: white; /* White text */
-    padding: 10px 20px; /* Padding for button */
-    border: none; /* No border */
-    border-radius: 5px; /* Rounded corners */
-    font-size: 16px; /* Comfortable font size */
-    cursor: pointer; /* Pointer cursor for buttons */
-    margin-top: 15px; /* Spacing above button */
-    width: 100%; /* Full-width button */
-    transition: background-color 0.3s; /* Smooth background transition */
-  }
-  
-  button:hover {
-    background-color: #0056b3; /* Darker shade on hover */
-  }
-  
-  .closeButton {
-    background-color: transparent; /* Transparent background */
-    color: #555; /* Grey text for close button */
-    border: none; /* No border */
-    font-size: 14px; /* Smaller font size */
-    cursor: pointer; /* Pointer cursor for close button */
-    margin-top: 10px; /* Spacing above */
-    text-align: center; /* Center the text */
-    display: block; /* Block display to occupy full width */
-    width: 100%; /* Full width for easy clicking */
-  }
-  
-  .closeButton:hover {
-    color: #ff3b30; /* Red color on hover for emphasis */
-    background-color: #efefef;
-  }
-  
-  @media (max-width: 600px) {
-    /* Responsive adjustments for smaller screens */
-    .modalContent {
-      width: 95%; /* Slightly wider for small screens */
-      padding: 15px; /* Less padding on smaller screens */
-    }
-  
-    h2 {
-      font-size: 20px; /* Smaller heading on mobile */
-    }
-  
-    button, .closeButton {
-      font-size: 14px; /* Smaller button text */
-    }
-  }
-  
+/* src/Certificates/CertificateExportModal/CertificateModal.module.css */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure modal is on top */
+}
 
-  .modalOverlay {
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for the overlay */
-    display: flex; /* Flexbox for centering */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    position: fixed; /* Fixed position to cover the entire screen */
-    top: 0; /* Align to the top */
-    left: 0; /* Align to the left */
-    right: 0; /* Align to the right */
-    bottom: 0; /* Align to the bottom */
-  }
-  
-  .modalContent {
-    background-color: #fff; /* White background for a clean look */
-    border-radius: 10px; /* Rounded corners for a modern feel */
-    padding: 20px; /* Inner padding for spacing */
-    width: 90%; /* Responsive width */
-    max-width: 500px; /* Limit max width for larger screens */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    position: relative; /* Positioning for absolute elements if needed */
-    transition: all 0.3s ease; /* Smooth transitions */
-    outline: none; /* Remove outline */
-  }
-  
-  /* The rest of your styles remain the same */
-  
+.modal {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    width: 400px; /* Set a fixed width for better layout */
+    max-width: 90%; /* Responsive width */
+    animation: slideIn 0.3s ease-out; /* Smooth entrance animation */
+}
+
+.modal h2 {
+    margin: 0 0 15px;
+    font-size: 1.5rem;
+    text-align: center;
+    color: #333; /* Darker color for the title */
+}
+
+.modal label {
+    display: block;
+    margin-bottom: 10px;
+    color: #555; /* Slightly lighter text color */
+}
+
+.modal input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.modal input:focus {
+    border-color: #007bff; /* Blue border on focus */
+    outline: none; /* Remove default outline */
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* Space above buttons */
+}
+
+.buttonContainer button {
+    flex: 1; /* Make buttons equal size */
+    margin: 0 5px; /* Space between buttons */
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff; /* Blue background */
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.buttonContainer button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.buttonContainer button:last-child {
+    background-color: #dc3545; /* Red for Cancel button */
+}
+
+.buttonContainer button:last-child:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+/* Slide in animation for modal */
+@keyframes slideIn {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

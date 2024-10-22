@@ -1,4 +1,4 @@
-// src/Certificates/CRF1/Cf1.js
+// src/Certificates/CRF1/Cf1.jsx
 import React, { forwardRef } from 'react';
 import { FaAward } from 'react-icons/fa';
 import styles from './crf1.module.css';

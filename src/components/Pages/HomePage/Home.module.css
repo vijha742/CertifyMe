@@ -51,6 +51,7 @@
 
 .button {
   padding: 10px 20px;
+  font-weight: ;
   border: none;
   border-radius: 8px;
   background-color: #1a73e8;
@@ -89,6 +90,7 @@
   width: 200px; /* Set a consistent button width */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .pdfButton:hover {

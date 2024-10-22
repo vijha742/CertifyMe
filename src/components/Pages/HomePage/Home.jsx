@@ -15,15 +15,13 @@ import CertificateModal from '../../Certificates/CertificateExportModal/Certific
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCertificate, setSelectedCertificate] = useState(null);
-  const [customization, setCustomization] = useState({ name: '', certificateName: '', dateIssued: '' });
+  const [confirmedCustomization, setConfirmedCustomization] = useState({ name: '', certificateName: '', dateIssued: '' });
 
-  // Create refs for each certificate
   const certificate1Ref = useRef();
   const certificate2Ref = useRef();
   const certificate3Ref = useRef();
   const certificate4Ref = useRef();
 
-  // Slider settings
   const settings = {
     dots: true,
     infinite: true,
@@ -32,12 +30,12 @@ const Home = () => {
     slidesToScroll: 1,
     arrows: true,
     centerMode: true,
-    centerPadding: '12%', // Adjust padding to reduce space
+    centerPadding: '12%',
   };
 
-  const handleGeneratePDF = async (certificateRef) => {
-    const element = certificateRef.current;
-    const canvas = await html2canvas(element);
+  const handleGeneratePDF = async () => {
+    const certificateRef = selectedCertificate.current;
+    const canvas = await html2canvas(certificateRef);
     const imgData = canvas.toDataURL('image/png');
     const doc = new jsPDF({
       orientation: 'landscape',
@@ -46,13 +44,6 @@ const Home = () => {
     });
 
     doc.addImage(imgData, 'PNG', 0, 0, 800, 500);
-
-    // Add the customized information to the PDF
-    // Ensure you provide proper Y-coordinates for the text to be visible
-    doc.text(`Recipient Name: ${customization.name}`, 50, 450);
-    doc.text(`Certificate Name: ${customization.certificateName}`, 50, 470);
-    doc.text(`Date Issued: ${customization.dateIssued}`, 50, 490);
-    
     doc.save('certificate.pdf');
   };
 
@@ -64,6 +55,13 @@ const Home = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedCertificate(null);
+  };
+
+  const handleCustomization = (customizationData, exportAfterSave = false) => {
+    setConfirmedCustomization(customizationData); // Update confirmed customization
+    if (exportAfterSave) {
+      handleGeneratePDF(); // Generate PDF if exportAfterSave is true
+    }
   };
 
   return (
@@ -101,19 +99,19 @@ const Home = () => {
           <h2 className={styles.templateHeader}>Certificate Templates</h2>
           <Slider {...settings}>
             <div className={styles.sliderItem}>
-              <Certificate1 ref={certificate1Ref} customization={customization} />
+              <Certificate1 ref={certificate1Ref} customization={confirmedCustomization} />
               <button className={styles.pdfButton} onClick={() => openModal(certificate1Ref)}>Customize</button>
             </div>
             <div className={styles.sliderItem}>
-              <Certificate2 ref={certificate2Ref} customization={customization} />
+              <Certificate2 ref={certificate2Ref} customization={confirmedCustomization} />
               <button className={styles.pdfButton} onClick={() => openModal(certificate2Ref)}>Customize</button>
             </div>
             <div className={styles.sliderItem}>
-              <Certificate3 ref={certificate3Ref} customization={customization} />
+              <Certificate3 ref={certificate3Ref} customization={confirmedCustomization} />
               <button className={styles.pdfButton} onClick={() => openModal(certificate3Ref)}>Customize</button>
             </div>
             <div className={styles.sliderItem}>
-              <Certificate4 ref={certificate4Ref} customization={customization} />
+              <Certificate4 ref={certificate4Ref} customization={confirmedCustomization} />
               <button className={styles.pdfButton} onClick={() => openModal(certificate4Ref)}>Customize</button>
             </div>
           </Slider>
@@ -123,14 +121,10 @@ const Home = () => {
           <p>&copy; 2024 CertifyMe. All Rights Reserved.</p>
         </footer>
 
-        {/* Render the modal */}
         <CertificateModal 
           isOpen={isModalOpen} 
           onClose={closeModal} 
-          onGenerate={(customizationData) => {
-            setCustomization(customizationData); // Set the customization details
-            handleGeneratePDF(selectedCertificate); // Generate PDF after setting customization
-          }} 
+          onGenerate={handleCustomization} // Call handleCustomization on generate
         />
       </div>
     </CenteredContainer>
