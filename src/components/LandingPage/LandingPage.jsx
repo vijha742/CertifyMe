@@ -1,20 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FaCertificate, FaShieldAlt, FaUserCheck } from 'react-icons/fa';
 import styles from './LandingPage.module.css';
 import CenteredContainer from '../CenterdComponent/CenteredContainer';
 
-
 const LandingPage = () => {
-  
-
   return (
     <CenteredContainer>
       <div className={styles.container}>
         <section className={styles.heroSection}>
-          <h1>Access a library of <br /> free design resources</h1>
-          <p>Create effortless certificates with.</p>
-          <button className={styles.ctaBtn} >Get Started</button>
-          <div className={styles.heroIcon}></div>
+          <div className={styles.heroContent}>
+            <h1>Welcome to <span className={styles.certifyme}>CertifyMe</span></h1>
+            <p>Create effortless certificates and verify any time with CertifyMe.</p>
+            <button className={styles.ctaBtn}>Get Started</button>
+          </div>
+
+          {/* Floating shapes */}
+          <div className={styles.floatingShapes}>
+            <div className={`${styles.shape} ${styles.shape1}`}></div>
+            <div className={`${styles.shape} ${styles.shape2}`}></div>
+            <div className={`${styles.shape} ${styles.shape3}`}></div>
+          </div>
         </section>
 
         <section className={styles.featuresSection}>
@@ -41,9 +46,6 @@ const LandingPage = () => {
         <footer className={styles.footer}>
           <p>&copy; 2024 CertifyMe. All rights reserved.</p>
         </footer>
-
-        {/* Modal Component */}
-        
       </div>
     </CenteredContainer>
   );
