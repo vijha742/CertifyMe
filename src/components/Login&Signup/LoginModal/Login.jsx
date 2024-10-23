@@ -1,15 +1,17 @@
+// Login.jsx
 import React, { useState } from 'react';
-import styles from './Login.module.css'; // Import CSS module
-import { auth } from '../firebase'; 
+import styles from './Login.module.css';
+import { auth } from '../firebase';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { FaTimes } from 'react-icons/fa'; // Import close icon
-import { Spinner } from 'react-bootstrap'; // Add a spinner from Bootstrap
+import { FaTimes } from 'react-icons/fa';
+import { Spinner } from 'react-bootstrap';
 
-const Login = ({ onClose, openSignupModal }) => { 
+const Login = ({ onClose, openSignupModal, onLoginSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,25 +22,31 @@ const Login = ({ onClose, openSignupModal }) => {
     }
 
     try {
+      setLoginLoading(true);
       await signInWithEmailAndPassword(auth, email, password);
       setError(''); // Clear error if login is successful
-      onClose(); // Close the modal after successful login
+      onLoginSuccess(); // Call the success callback
     } catch (error) {
-      setError(error.message); // Set error message if login fails
+      setError(error.message);
+    } finally {
+      setLoginLoading(false);
     }
   };
 
   const handleGoogleSignIn = async () => {
-    setLoading(true); 
+    setLoading(true);
     const provider = new GoogleAuthProvider();
     
     try {
-      await signInWithPopup(auth, provider);
-      onClose(); // Close the modal after successful Google login
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user; // Get user info
+      console.log('User signed in successfully:', user); // Log user info
+      onLoginSuccess(); // Call success callback after Google login
     } catch (error) {
-      console.error("Google Sign-in Error", error);
+      console.error("Google Sign-in Error Code:", error.code);
+      console.error("Google Sign-in Error Message:", error.message);
       let errorMessage;
-      
+
       switch (error.code) {
         case 'auth/popup-closed-by-user':
           errorMessage = "The popup was closed before completing the sign in.";
@@ -49,13 +57,22 @@ const Login = ({ onClose, openSignupModal }) => {
         case 'auth/network-request-failed':
           errorMessage = "Network error, please try again.";
           break;
+        case 'auth/account-exists-with-different-credential':
+          errorMessage = "An account already exists with the same email but a different sign-in method.";
+          break;
+        case 'auth/invalid-credential':
+          errorMessage = "The credential used is invalid or expired. Try signing in again.";
+          break;
+        case 'auth/operation-not-allowed':
+          errorMessage = "The Google sign-in method is disabled. Contact support.";
+          break;
         default:
-          errorMessage = "Something went wrong during Google Sign-in.";
+          errorMessage = `Something went wrong during Google Sign-in. (${error.code})`;
       }
       
-      setError(errorMessage); // Set the error message dynamically
+      setError(errorMessage);
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
@@ -88,7 +105,9 @@ const Login = ({ onClose, openSignupModal }) => {
               aria-label="Password"
             />
           </div>
-          <button type="submit" className={styles.submitButton}>Login</button>
+          <button type="submit" className={styles.submitButton} disabled={loginLoading}>
+            {loginLoading ? <Spinner animation="border" size="sm" /> : 'Login'}
+          </button>
         </form>
 
         <div className={styles.googleSigninButton} onClick={handleGoogleSignIn}>
@@ -107,7 +126,7 @@ const Login = ({ onClose, openSignupModal }) => {
         </div>
 
         <p>
-          Don't have an account? <button className={styles.switchLink} onClick={openSignupModal}>Sign up here</button>
+          Don't have an account? <button onClick={openSignupModal}>Sign Up</button>
         </p>
       </div>
     </div>

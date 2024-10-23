@@ -11,6 +11,7 @@ import Certificate3 from '../../Certificates/CRF3/cf3';
 import Certificate4 from '../../Certificates/CRF4/cf4';
 import Slider from 'react-slick';
 import CertificateModal from '../../Certificates/CertificateExportModal/CertificateModal';
+import NavbarMain from '../../Navbars/NavbarMains/NavbaMain';
 
 
 
@@ -71,6 +72,10 @@ const Home = () => {
   };
 
   return (
+
+      <>
+    <NavbarMain/>
+
     <CenteredContainer>
       <div className={styles.homeContainer}>
         <header className={styles.header}>
@@ -134,6 +139,7 @@ const Home = () => {
         />
       </div>
     </CenteredContainer>
+    </>
   );
 };
 
